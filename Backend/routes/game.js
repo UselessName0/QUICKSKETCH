@@ -3,7 +3,7 @@ const router = express.Router();
 const gameController = require('../controllers/gameController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
-// Proteggiamo TUTTE le rotte di questo file imponendo l'uso dell'authMiddleware
+// Protezione di tutte le rotte del file imponendo l'uso dell'authMiddleware
 router.use(authMiddleware);
 
 // GET /api/game/random-word -> Ottiene la parola da Wikipedia
