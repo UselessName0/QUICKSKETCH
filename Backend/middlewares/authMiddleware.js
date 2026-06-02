@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-    // Cerca il token nell'intestazione della richiesta
     const token = req.header('Authorization');
     
     if (!token) {
@@ -9,12 +8,9 @@ module.exports = (req, res, next) => {
     }
 
     try {
-        // Verifica il token (rimuovendo la parola "Bearer " che di solito lo precede)
         const verified = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET);
-        
-        // Aggiunge i dati dell'utente (es. l'ID) alla richiesta, così i controller successivi sapranno chi è
         req.user = verified;
-        next(); // Fa passare l'utente alla rotta richiesta
+        next(); 
     } catch (error) {
         res.status(400).json({ message: 'Token non valido.' });
     }

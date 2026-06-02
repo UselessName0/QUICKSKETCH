@@ -2,7 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// LOGICA DI REGISTRAZIONE
+// Registrazione
 exports.register = async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -13,17 +13,17 @@ exports.register = async (req, res) => {
                 message: 'La password deve avere almeno 8 caratteri, una lettera maiuscola e un numero.' 
             });
         }
-        // 1. Controllo se l'utente esiste già
+        // Controllo di esistenza utente
         const existingUser = await User.findOne({ username });
         if (existingUser) {
             return res.status(400).json({ message: 'Username già in uso.' });
         }
 
-        // 2. Cripto la password prima di salvarla
+        // Cifratura password 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // 3. Salvo il nuovo utente nel database
+        // Salvataggio utente nel database
         const newUser = new User({ 
             username, 
             password: hashedPassword 
@@ -37,31 +37,31 @@ exports.register = async (req, res) => {
     }
 };
 
-// LOGICA DI LOGIN
+// Logica di login 
 exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        // 1. Cerco l'utente nel database
+        // Ricerca utente nel database
         const user = await User.findOne({ username });
         if (!user) {
             return res.status(400).json({ message: 'Credenziali non valide.' });
         }
 
-        // 2. Controllo che la password coincida con quella criptata
+        // Confronto password con quella cifrata
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ message: 'Credenziali non valide.' });
         }
 
-        // 3. Genero il Token JWT valido per 1 ora
+        // Generazione token JWT (per singolo utente e per 1 ora)
         const token = jwt.sign(
             { id: user._id }, 
             process.env.JWT_SECRET, 
             { expiresIn: '1h' }
         );
 
-        // 4. Rispondo al frontend con il token e i dati dell'utente
+        // Invio al frontend token e dati utente (tranne la password)
         res.json({ 
             token, 
             user: { id: user._id, username: user.username } 
@@ -72,10 +72,9 @@ exports.login = async (req, res) => {
     }
 };
 
-// RECUPERA I DATI DELL'UTENTE LOGGATO (incluso il punteggio)
+// Reupero profilo utente (tramite end-point protetto)
 exports.getMe = async (req, res) => {
     try {
-        // req.user.id arriva dal token. Troviamo l'utente ma escludiamo la password per sicurezza!
         const user = await User.findById(req.user.id).select('-password');
         res.json(user);
     } catch (error) {
