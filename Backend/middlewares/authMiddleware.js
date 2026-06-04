@@ -16,4 +16,14 @@ module.exports = (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
+
+    try {
+        const clear_token = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = clear_token;
+        next();
+    } catch (error) {
+        return res.status(403).json({
+            message: 'Token non valido o scaduto.'
+        });
+    }
 };
