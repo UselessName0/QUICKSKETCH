@@ -9,7 +9,7 @@ const app = express();
 app.use(cors({ 
     origin: 'http://localhost:5173', 
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true 
+    credentials: true // Permettendo la possibilità di inviare i cookie qualora fosse necessario (per le sessioni ad esempio) 
 }));
 
 // Limitatore JSON: Blocca i payload troppo pesanti

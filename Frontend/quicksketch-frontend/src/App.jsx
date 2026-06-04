@@ -23,8 +23,7 @@ function AppRoutes() {
         <Navbar />
         <main className="container mx-auto px-4 py-8">
           <Routes>
-            <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
-            
+            <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />         
             <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/create" element={<ProtectedRoute><CreateSketch /></ProtectedRoute>} />
             <Route path="/play/:id" element={<ProtectedRoute><PlayGame /></ProtectedRoute>} />
