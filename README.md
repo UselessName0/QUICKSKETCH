@@ -21,7 +21,7 @@ QuickSketch è un'applicazione web interattiva con architettura client-server in
 
 ---
 
-## ⚙️ Installazione e Configurazione
+## Installazione e Configurazione
 
 Assicurarsi di avere [Node.js](https://nodejs.org/) e l'accesso a un cluster [MongoDB](https://www.mongodb.com/) (locale o Atlas) installati.
 
