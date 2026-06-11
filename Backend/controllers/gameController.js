@@ -126,7 +126,7 @@ exports.guessSketch = async (req, res) => {
             return res.json({ 
                 message: 'Parola errata.', 
                 attempts: guessRecord.attemptsCount,
-                hint: hint // Il frontend mostrerà l'hint solo se non è null
+                hint: hint 
             });
         }
     } catch (error) {
@@ -164,7 +164,7 @@ exports.getSketchesFeed = async (req, res) => {
     }
 };
 
-// Recupero di uno sketch per giocare
+// Recupero di uno sketch per ogni singolo giocare
 exports.getSketchById = async (req, res) => {
     try {
         const sketch = await Sketch.findById(req.params.sketchId).select('-word');

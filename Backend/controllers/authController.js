@@ -37,7 +37,7 @@ exports.register = async (req, res) => {
     }
 };
 
-// Logica di login 
+// Login 
 exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -54,14 +54,14 @@ exports.login = async (req, res) => {
             return res.status(400).json({ message: 'Credenziali non valide.' });
         }
 
-        // Generazione token JWT (per singolo utente e per 1 ora)
+        // Generazione token JWT
         const token = jwt.sign(
             { id: user._id }, 
             process.env.JWT_SECRET, 
             { expiresIn: '1h' }
         );
 
-        // Invio al frontend token e dati utente (tranne la password)
+        // Invio al frontend token e username
         res.json({ 
             token, 
             user: { id: user._id, username: user.username } 
@@ -72,7 +72,7 @@ exports.login = async (req, res) => {
     }
 };
 
-// Reupero profilo utente (tramite end-point protetto)
+// Reupero profilo utente con end-point protetto
 exports.getMe = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password');

@@ -5,15 +5,16 @@ const cors = require('cors');
 
 const app = express();
 
-// CORS: limitiamo solo al frontend in sviluppo di accedere alle API
+// CORS: inizialmente senza process.env.CLIENT_URL per limitare al solo localhost di acccedere
+const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+
 app.use(cors({ 
-    origin: 'http://localhost:5173', 
+    origin: clientUrl, 
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true // Permettendo la possibilità di inviare i cookie qualora fosse necessario (per le sessioni ad esempio) 
+    credentials: true
 }));
 
-// Limitatore JSON: Blocca i payload troppo pesanti
-// Previene attacchi DoS
+// Limitatore JSON: Blocca i payload troppo pesanti (per evitare attacchi DoS)
 app.use(express.json({ limit: '2mb' })); 
 
 // Rotte
