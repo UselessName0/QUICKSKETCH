@@ -33,4 +33,4 @@ dist-ssr
 
 auth.spec.cjs
 playwright.config.js
-node.modules
+node_modules
